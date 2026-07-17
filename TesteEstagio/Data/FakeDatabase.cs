@@ -1,6 +1,10 @@
-﻿namespace TesteEstagio.Data
+﻿using TesteEstagio.Models;
+
+namespace TesteEstagio.Data
 {
-    public class FakeDatabase
+    public static class FakeDatabase
     {
+        public static List<Pessoa> Pessoas = new();
+
     }
 }

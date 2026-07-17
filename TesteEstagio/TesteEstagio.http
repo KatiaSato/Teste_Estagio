@@ -4,3 +4,4 @@ GET {{TesteEstagio_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+

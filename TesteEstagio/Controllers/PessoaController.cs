@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TesteEstagio.Data;
 using TesteEstagio.Models;
+using TesteEstagio.Services;
 
 namespace TesteEstagio.Controllers
 {
@@ -7,10 +9,25 @@ namespace TesteEstagio.Controllers
     [Route("api/[controller]")]
     public class PessoaController : ControllerBase
     {
+        private readonly PessoaService _service = new();
         [HttpGet]
-        public IEnumerable<Pessoa> Get()
+        public IActionResult Get()
         {
-            return new List<Pessoa>();
+            return Ok(_service.Listar());
+        }
+
+        [HttpPost]
+        public IActionResult Post(Pessoa pessoa)
+        {
+            Pessoa novaPessoa = _service.Adicionar(pessoa);
+            return Created("", novaPessoa);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            _service.Excluir(id);
+            return NoContent();
         }
     }
 }
