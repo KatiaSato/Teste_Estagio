@@ -42,7 +42,8 @@ namespace TesteEstagio.Services
             {
                 Receitas = pessoa.Transacoes.Where(t => t.Tipo == "Receita").Sum(t => t.Valor),
                 Despesas = pessoa.Transacoes.Where(t => t.Tipo == "Despesa").Sum(t => t.Valor),
-                Saldo = pessoa.Transacoes.Where(t => t.Tipo == "Receita").Sum(t => t.Valor) - pessoa.Transacoes.Where(t => t.Tipo == "Despesa").Sum(t => t.Valor)
+                Saldo = pessoa.Transacoes.Where(t => t.Tipo == "Receita").Sum(t => t.Valor) 
+                - pessoa.Transacoes.Where(t => t.Tipo == "Despesa").Sum(t => t.Valor)
             };
             return total;
         }
