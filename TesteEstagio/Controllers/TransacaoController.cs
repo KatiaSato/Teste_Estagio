@@ -8,7 +8,13 @@ namespace TesteEstagio.Controllers
     [Route("api/[controller]")]
     public class TransacaoController : ControllerBase
     {
-        private readonly TransacaoService _service = new();
+        private readonly TransacaoService _service;
+
+        public TransacaoController(TransacaoService service)
+        {
+            _service = service;
+        }
+        
         [HttpGet("resumo/{pessoaId}")]
         public IActionResult Get(int pessoaId)
         {
@@ -21,8 +27,8 @@ namespace TesteEstagio.Controllers
         {
             try
             {
-Transacao novaTransacao = _service.Adicionar(transacao);
-            return Created("", novaTransacao);
+                Transacao novaTransacao = _service.Adicionar(transacao);
+                return Created("", novaTransacao);
             }
             catch (ArgumentException ex)
             {

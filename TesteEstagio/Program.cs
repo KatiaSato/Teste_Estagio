@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TesteEstagio.Data;
+using TesteEstagio.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=TesteEstagio.db"));
+builder.Services.AddScoped<PessoaService>();
+builder.Services.AddScoped<TransacaoService>();
 
 var app = builder.Build();
 

@@ -1,4 +1,5 @@
-﻿using TesteEstagio.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using TesteEstagio.Data;
 using TesteEstagio.Dtos;
 using TesteEstagio.Models;
 
@@ -6,9 +7,14 @@ namespace TesteEstagio.Services
 {
     public class TransacaoService
     {
+        private readonly AppDbContext _context;
+        public TransacaoService(AppDbContext context)
+        {
+            _context = context;
+        }
         public Transacao Adicionar(Transacao transacao)
         {
-            var pessoa = FakeDatabase.Pessoas.Find(p => p.Id == transacao.PessoaId);
+            var pessoa = _context.Pessoas.Find(transacao.PessoaId);
             if (pessoa == null)
             {
                 throw new ArgumentException("Pessoa não encontrada.");
@@ -18,22 +24,14 @@ namespace TesteEstagio.Services
                 {
                     throw new ArgumentException("Pessoa menor de idade não pode cadastrar receitas.");
                 }
-
-            if (!pessoa.Transacoes.Any())
-            {
-                transacao.Id = 1;
-            }
-            else
-            {
-                transacao.Id = pessoa.Transacoes.Max(t => t.Id) + 1;
-            }
             pessoa.Transacoes.Add(transacao);
+            _context.SaveChanges();
             return transacao;
         }
 
         public ResumoFinanceiroDto ObterResumo(int pessoaId)
         {
-            var pessoa = FakeDatabase.Pessoas.Find(p => p.Id == pessoaId);
+            var pessoa = _context.Pessoas.Include(p => p.Transacoes).FirstOrDefault(p => p.Id == pessoaId);
             if (pessoa == null)
             {
                 throw new ArgumentException("Pessoa não encontrada.");

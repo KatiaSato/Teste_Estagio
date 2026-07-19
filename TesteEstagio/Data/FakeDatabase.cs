@@ -2,7 +2,7 @@
 
 namespace TesteEstagio.Data
 {
-    public static class FakeDatabase
+    public static class _context
     {
         public static List<Pessoa> Pessoas = new();
 

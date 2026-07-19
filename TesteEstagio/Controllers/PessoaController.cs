@@ -9,7 +9,12 @@ namespace TesteEstagio.Controllers
     [Route("api/[controller]")]
     public class PessoaController : ControllerBase
     {
-        private readonly PessoaService _service = new();
+        private readonly PessoaService _service;
+        public PessoaController(PessoaService service)
+        {
+            _service = service;
+        }
+            
         [HttpGet]
         public IActionResult Get()
         {

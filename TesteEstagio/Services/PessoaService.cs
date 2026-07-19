@@ -6,9 +6,14 @@ namespace TesteEstagio.Services
 {
     public class PessoaService
     {
+        private readonly AppDbContext _context;
+        public PessoaService(AppDbContext context)
+        {
+            _context = context;
+        }
         public List<Pessoa> Listar()
         {
-            return FakeDatabase.Pessoas;
+            return _context.Pessoas.ToList();
         }
         public Pessoa Adicionar(Pessoa pessoa)
         {
@@ -20,29 +25,23 @@ namespace TesteEstagio.Services
             {
                 throw new ArgumentException("Idade inválida");
             }
-            if (FakeDatabase.Pessoas.Count == 0)
-            {
-                pessoa.Id = 1;   
-            }
-            else
-            {
-                pessoa.Id = FakeDatabase.Pessoas.Max(p => p.Id) + 1;
-            }
 
-            FakeDatabase.Pessoas.Add(pessoa);
+            _context.Pessoas.Add(pessoa);
+            _context.SaveChanges();
 
             return pessoa;
         }
 
         public void Excluir(int id) {
-            var pessoa = FakeDatabase.Pessoas.Find(p => p.Id == id);
+            var pessoa = _context.Pessoas.Find(id);
             if (pessoa == null)
             {
                 throw new ArgumentException("Pessoa não encontrada.");
             }
 
             //Remover tambem todas as transacoes da pessoa
-            FakeDatabase.Pessoas.Remove(pessoa);
+            _context.Pessoas.Remove(pessoa);
+            _context.SaveChanges();
         }
     }
 }
