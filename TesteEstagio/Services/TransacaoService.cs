@@ -24,7 +24,7 @@ namespace TesteEstagio.Services
                 {
                     throw new ArgumentException("Pessoa menor de idade não pode cadastrar receitas.");
                 }
-            pessoa.Transacoes.Add(transacao);
+            _context.Transacoes.Add(transacao);
             _context.SaveChanges();
             return transacao;
         }
@@ -44,6 +44,13 @@ namespace TesteEstagio.Services
                 - pessoa.Transacoes.Where(t => t.Tipo == "Despesa").Sum(t => t.Valor)
             };
             return total;
+        }
+
+        public List<Transacao> ListarPorPessoa(int pessoaId)
+        {
+            return _context.Transacoes
+                .Where(t => t.PessoaId == pessoaId)
+                .ToList();
         }
 
     }

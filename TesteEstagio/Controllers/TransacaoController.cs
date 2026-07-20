@@ -15,11 +15,25 @@ namespace TesteEstagio.Controllers
             _service = service;
         }
         
-        [HttpGet("resumo/{pessoaId}")]
-        public IActionResult Get(int pessoaId)
+        [HttpGet("{pessoaId}")]
+        public IActionResult GetTransacoes(int pessoaId)
         {
-            var resumo = _service.ObterResumo(pessoaId);
-            return Ok(resumo);
+            var transacoes = _service.ListarPorPessoa(pessoaId);
+            return Ok(transacoes);
+        }
+
+        [HttpGet("resumo/{pessoaId}")]
+        public IActionResult GetResumo(int pessoaId)
+        {
+            try
+            {
+                var resumo = _service.ObterResumo(pessoaId);
+                return Ok(resumo);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
