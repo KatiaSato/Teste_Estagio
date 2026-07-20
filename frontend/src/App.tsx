@@ -131,136 +131,223 @@ function App() {
     }
     if (pessoaSelecionada == null) {
         return (
-            <div>
-                <h1>Cadastro de Pesoas</h1>
-                <input
-                    type="text"
-                    placeholder="Nome"
-                    value={nome}
-                    onChange={(e) => setNome(e.target.value)}
-                />
-                <input
-                    type="number"
-                    placeholder="Idade"
-                    value={idade}
-                    onChange={(e) => setIdade(e.target.value)}
-                />
-                <br/>
-                <br/>
+            <div className="app-container">
+                <header className="page-header">
+                    <h1>Controle Financeiro</h1>
+                    <p>Gerencie pessoas e suas transações.</p>
+                </header>
+                <section className="panel">
+    <h2 className="panel-title">Cadastro de Pessoas</h2>
 
-                <button onClick={cadastrar}>
-                    Cadastrar
-                </button>
-                <hr/>
-                <h2>Pessoas cadastradas</h2>
-                {
-                    pessoas.map((pessoa) => (
-                        <div key={pessoa.id}>
-                            <strong>{pessoa.nome}</strong>
-                            - {pessoa.idade} anos
+    <div className="form-group">
 
-                            <button onClick={() => {
-                                console.log(pessoa);
-                                setPessoaSelecionada(pessoa);
-                            }}>
-                                Transações
-                            </button>
-                            {" "}
-                            <button onClick={() => excluirPessoa(pessoa.id)}>
-                                Excluir
-                            </button>
-                        </div>
-                    ))}
+    <label>Nome</label>
+
+    <input
+        type="text"
+        placeholder="Digite o nome"
+        value={nome}
+        onChange={(e) => setNome(e.target.value)}
+    />
+
+</div>
+
+<div className="form-group">
+
+    <label>Idade</label>
+
+    <input
+        type="number"
+        placeholder="Digite a idade"
+        value={idade}
+        onChange={(e) => setIdade(e.target.value)}
+    />
+
+</div>
+
+    <button onClick={cadastrar}>
+        Cadastrar
+    </button>
+</section>
+
+                <section className="panel">
+
+    <h2 className="panel-title">Pessoas cadastradas</h2>
+
+    {
+        pessoas.map((pessoa) => (
+
+            <div className="person-item" key={pessoa.id}>
+
+    <div className="person-info">
+
+        <strong>{pessoa.nome}</strong>
+
+        <span>{pessoa.idade} anos</span>
+
+    </div>
+
+    <div className="button-group">
+
+        <button
+            onClick={() => {
+                console.log(pessoa);
+                setPessoaSelecionada(pessoa);
+            }}
+        >
+            Transações
+        </button>
+
+        <button
+            className="button-danger"
+            onClick={() => excluirPessoa(pessoa.id)}
+        >
+            Excluir
+        </button>
+
+    </div>
+
+</div>
+
+        ))
+    }
+
+</section>
             </div>
         );
     }
     return (
-        <div>
-            <h1>Transações</h1>
+        <div className="app-container">
+            <header className="page-header">
+    <h1>Transações</h1>
+    <p>Movimentações de {pessoaSelecionada!.nome}</p>
+</header>
+<section className="panel">
+    <h2 className="panel-title">Cadastrar transação</h2>
 
-            <h2>{pessoaSelecionada!.nome}</h2>
+            <div className="form-group">
 
-            <input
-                type="text"
-                placeholder="Descrição"
-                value={descricao}
-                onChange={(e) => setDescricao(e.target.value)}
-            />
-            <br/>
-            <br/>
-            <input
-                type="number"
-                placeholder="Valor"
-                value={valor}
-                onChange={(e) => setValor(e.target.value)}
-            />
-            <br/>
-            <br/>
+    <label>Descrição</label>
 
-            <label>
-                <input
-                    type="radio"
-                    value="Receita"
-                    checked={tipo === "Receita"}
-                    onChange={(e) => setTipo(e.target.value)}
-                />
-                Receita
-            </label>
-            <label>
-                <input
-                    type="radio"
-                    value="Despesa"
-                    checked={tipo === "Despesa"}
-                    onChange={(e) => setTipo(e.target.value)}
-                />
-                Despesa
-            </label>
-            <br/>
-            <br/>
+    <input
+        type="text"
+        placeholder="Digite a descrição"
+        value={descricao}
+        onChange={(e) => setDescricao(e.target.value)}
+    />
 
-            <button onClick={cadastrarTransacao}>
-                Cadastrar Transação
-            </button>
-            <button onClick={() =>
-                setPessoaSelecionada(null)}>
-                Voltar
-            </button>
-            <hr/>
-            <h3>Transações</h3>
-            {
-                transacoes.map((transacao) => (
-                        <div key={transacao.id}>
-                            <strong>{transacao.descricao} </strong>
+</div>
+            <div className="form-group">
 
-                            {" - "}
+    <label>Valor</label>
 
-                            R$ {transacao.valor}
+    <input
+        type="number"
+        placeholder="0,00"
+        value={valor}
+        onChange={(e) => setValor(e.target.value)}
+    />
 
-                            {" - "}
+</div>
 
-                            {transacao.tipo}
+            <div className="form-group">
 
+    <label>Tipo</label>
 
-                        </div>
+    <label>
+        <input
+            type="radio"
+            value="Receita"
+            checked={tipo === "Receita"}
+            onChange={(e) => setTipo(e.target.value)}
+        />
+        Receita
+    </label>
 
-                    )
-                )
+    <label>
+        <input
+            type="radio"
+            value="Despesa"
+            checked={tipo === "Despesa"}
+            onChange={(e) => setTipo(e.target.value)}
+        />
+        Despesa
+    </label>
 
-            }
-            <br />
-            <br />
-            <hr/>
-            <h3>Resumo Financeiro</h3>
-            <p>
-                <strong>Receitas:</strong> R$ {resumo?.receitas}
-            </p>
-            <p>
-                <strong>Despesas:</strong> R$ {resumo?.despesas}
-            </p>
-            <p>
-                <strong>Saldo:</strong> R$ {resumo?.saldo}
-            </p>
+</div>
 
+                <div className="button-group">
+        <button onClick={cadastrarTransacao}>
+            Cadastrar Transação
+        </button>
+
+        <button
+            className="button-secondary"
+            onClick={() => setPessoaSelecionada(null)}
+        >
+            Voltar
+        </button>
+    </div>
+</section>
+            <section className="panel">
+
+    <h2 className="panel-title">
+        Transações
+    </h2>
+
+    {
+        transacoes.map((transacao) => (
+
+            <div
+                className="person-item"
+                key={transacao.id}
+            >
+
+                <div className="person-info">
+
+                    <strong>{transacao.descricao}</strong>
+
+                    <span>
+                        {transacao.tipo}
+                    </span>
+
+                </div>
+
+                <strong>
+                    R$ {transacao.valor}
+                </strong>
+
+            </div>
+
+        ))
+    }
+
+</section>
+            <section className="panel">
+
+    <h2 className="panel-title">
+        Resumo Financeiro
+    </h2>
+
+    <p>
+        <strong>Receitas:</strong>
+        {" "}
+        R$ {resumo?.receitas}
+    </p>
+
+    <p>
+        <strong>Despesas:</strong>
+        {" "}
+        R$ {resumo?.despesas}
+    </p>
+
+    <p>
+        <strong>Saldo:</strong>
+        {" "}
+        R$ {resumo?.saldo}
+    </p>
+
+</section>
         </div>
     );
 }
