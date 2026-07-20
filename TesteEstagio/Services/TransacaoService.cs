@@ -19,11 +19,22 @@ namespace TesteEstagio.Services
             {
                 throw new ArgumentException("Pessoa não encontrada.");
             }
+
+            if (string.IsNullOrWhiteSpace(transacao.Descricao))
+            {
+                throw new ArgumentException("Descrição obrigatória.");
+            }
+
+            if (transacao.Valor <= 0)
+            {
+                throw new ArgumentException("Valor inválido.");
+            }
+
             if (pessoa.Idade < 18 && transacao.Tipo == "Receita")
-                
-                {
-                    throw new ArgumentException("Pessoa menor de idade não pode cadastrar receitas.");
-                }
+
+            {
+                throw new ArgumentException("Pessoa menor de idade não pode cadastrar receitas.");
+            }
             _context.Transacoes.Add(transacao);
             _context.SaveChanges();
             return transacao;
@@ -40,7 +51,7 @@ namespace TesteEstagio.Services
             {
                 Receitas = pessoa.Transacoes.Where(t => t.Tipo == "Receita").Sum(t => t.Valor),
                 Despesas = pessoa.Transacoes.Where(t => t.Tipo == "Despesa").Sum(t => t.Valor),
-                Saldo = pessoa.Transacoes.Where(t => t.Tipo == "Receita").Sum(t => t.Valor) 
+                Saldo = pessoa.Transacoes.Where(t => t.Tipo == "Receita").Sum(t => t.Valor)
                 - pessoa.Transacoes.Where(t => t.Tipo == "Despesa").Sum(t => t.Valor)
             };
             return total;
