@@ -11,6 +11,8 @@ namespace TesteEstagio.Services
         {
             _context = context;
         }
+
+        // Listar todas as pessoas cadastradas no banco de dados
         public List<Pessoa> Listar()
         {
             return _context.Pessoas.ToList();
@@ -27,11 +29,13 @@ namespace TesteEstagio.Services
             }
 
             _context.Pessoas.Add(pessoa);
+            //confirma a adição da pessoa no banco de dados
             _context.SaveChanges();
 
             return pessoa;
         }
 
+        //localiza a pessoa pelo id e atualiza os dados no banco de dados
         public void Excluir(int id) {
             var pessoa = _context.Pessoas.Find(id);
             if (pessoa == null)
@@ -39,7 +43,6 @@ namespace TesteEstagio.Services
                 throw new ArgumentException("Pessoa não encontrada.");
             }
 
-            //Remover tambem todas as transacoes da pessoa
             _context.Pessoas.Remove(pessoa);
             _context.SaveChanges();
         }

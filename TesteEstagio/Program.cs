@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+//front-end acessa a API 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("React", policy =>
@@ -19,8 +21,12 @@ builder.Services.AddCors(options =>
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+/*Registra o contexto do Entity Framework e configura o SQLite
+  como banco de dados persistente da aplicação.*/
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=TesteEstagio.db"));
+
+//Registra os serviços de PessoaService e TransacaoService para injeção de dependência.
 builder.Services.AddScoped<PessoaService>();
 builder.Services.AddScoped<TransacaoService>();
 

@@ -3,11 +3,13 @@ import './App.css'
 
 
 function App() {
+    //Responsaveis pelos campos do formulário 
     const [nome, setNome] = useState("");
     const [idade, setIdade] = useState("");
     const [descricao, setDescricao] = useState("");
     const [valor, setValor] = useState("");
     const [tipo, setTipo] = useState("Despesa");
+    //Armazena e lista que retornou pela API
     const [pessoas, setPessoas] = useState<Pessoa[]>([]);
     const [transacoes, setTransacoes] = useState<Transacao[]>([]);
     const [resumo, setResumo] = useState<ResumoFinanceiro | null>(null);
@@ -72,6 +74,8 @@ function App() {
             alert("Informe uma idade entre 0 e 130 anos.");
             return;
         }
+        setNome("");
+        setIdade("");
 
         try {
             const resposta = await fetch("http://localhost:5221/api/Pessoa", {
@@ -117,10 +121,12 @@ function App() {
         console.log(dados);
         setPessoas(dados);
     }
+    //executa a listagem de pessoas quando o componente é carregado
     useEffect(() => {
         listarPessoas();
     }, []);
 
+    //Atualiza as transações e o resumo sempre que outra a pessoa é selecionada
     useEffect(() => {
         if (pessoaSelecionada != null) {
             listarTransacoes();
@@ -305,6 +311,7 @@ function App() {
                     <h2 className="panel-title">Pessoas cadastradas</h2>
 
                     {
+                        /* O map percorre a lista e cria um elemento visual para cada pessoa. */
                         pessoas.map((pessoa) => (
 
                             <div className="person-item" key={pessoa.id}>
@@ -346,6 +353,7 @@ function App() {
             </div>
         );
     }
+    //Formata o numero de acordo com o padrão monetério brasileiro
     const formatarMoeda = (valor: number) => {
         return valor.toLocaleString("pt-BR", {
             style: "currency",

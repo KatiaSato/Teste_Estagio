@@ -29,7 +29,7 @@ namespace TesteEstagio.Services
             {
                 throw new ArgumentException("Valor inválido.");
             }
-
+            //Regra de negócio: Pessoa menor de idade não pode cadastrar receitas
             if (pessoa.Idade < 18 && transacao.Tipo == "Receita")
 
             {
@@ -57,6 +57,7 @@ namespace TesteEstagio.Services
             return total;
         }
 
+        //Filtra as transações de uma pessoa pelo seu Id
         public List<Transacao> ListarPorPessoa(int pessoaId)
         {
             return _context.Transacoes
